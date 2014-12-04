@@ -1,0 +1,13 @@
+syntax: glob
+*.exe
+*.pdb
+.csv
+*~*
+*.vsp
+*.psess
+*cache
+bin/
+obj/
+*.suo
+*.hg
+.hgignore
