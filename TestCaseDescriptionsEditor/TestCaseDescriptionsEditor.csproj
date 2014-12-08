@@ -52,6 +52,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestCaseDescription.cs" />
+    <Compile Include="TestCaseDescriptions.cs" />
+    <Compile Include="XMLEnum.cs" />
     <EmbeddedResource Include="FormTestCaseDescriptions.resx">
       <DependentUpon>FormTestCaseDescriptions.cs</DependentUpon>
     </EmbeddedResource>
