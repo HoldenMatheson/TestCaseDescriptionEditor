@@ -42,6 +42,8 @@
             this.btnMoveDown = new System.Windows.Forms.Button();
             this.btnKill = new System.Windows.Forms.Button();
             this.fullTree = new System.Windows.Forms.TreeView();
+            this.btnApply = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -158,6 +160,7 @@
             this.btnKill.TabIndex = 13;
             this.btnKill.Text = "Kill";
             this.btnKill.UseVisualStyleBackColor = true;
+            this.btnKill.Click += new System.EventHandler(this.btnKill_Click);
             // 
             // fullTree
             // 
@@ -167,11 +170,33 @@
             this.fullTree.TabIndex = 14;
             this.fullTree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.fullTree_NodeMouseClick);
             // 
+            // btnApply
+            // 
+            this.btnApply.Location = new System.Drawing.Point(186, 158);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(134, 23);
+            this.btnApply.TabIndex = 15;
+            this.btnApply.Text = "Apply Changes";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Location = new System.Drawing.Point(97, 519);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.TabIndex = 16;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
             // FormTestCaseDescriptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(942, 608);
+            this.Controls.Add(this.btnAdd);
+            this.Controls.Add(this.btnApply);
             this.Controls.Add(this.fullTree);
             this.Controls.Add(this.btnKill);
             this.Controls.Add(this.btnMoveDown);
@@ -210,6 +235,8 @@
         private System.Windows.Forms.Button btnMoveDown;
         private System.Windows.Forms.Button btnKill;
         private System.Windows.Forms.TreeView fullTree;
+        private System.Windows.Forms.Button btnApply;
+        private System.Windows.Forms.Button btnAdd;
     }
 }
 

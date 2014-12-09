@@ -61,7 +61,7 @@ namespace TestCaseDescriptionsEditor
                     data.Nodes.Add("Value: " + pair.Value);
                 }
             }
-            fullTree.Update();
+            fullTree.Nodes[0].Expand();
         }
 
         private void PopulateCurrentTree()
@@ -127,6 +127,28 @@ namespace TestCaseDescriptionsEditor
                 currentCases.MoveDown(currentCase, out errorMessage);
                 PopulateTree();
             }
+        }
+
+        private void btnKill_Click(object sender, EventArgs e)
+        {
+            if (currentCase != null)
+            {
+                currentCases.Remove(currentCase, out errorMessage);
+                PopulateTree();
+            }
+        }
+
+        private void btnApply_Click(object sender, EventArgs e)
+        {
+            currentCase.Name = txtName.Text;
+            currentCase.Title = txtTitle.Text;
+            PopulateTree();
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            currentCase = new TestCaseDescription();
+            currentCases.Add(currentCase, out errorMessage);
         }
     }
 }
