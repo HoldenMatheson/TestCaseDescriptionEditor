@@ -53,7 +53,7 @@ namespace TestCaseDescriptionsEditor
                 {
                     attrib.Nodes.Add(attribute);
                 }
-                node.Nodes.Add(testCase.IsSelected ? "True" : "False");
+                node.Nodes.Add("Selected: " + (testCase.IsSelected ? "True" : "False"));
                 data = node.Nodes.Add("Data Items");
                 foreach (KeyValuePair<string, string> pair in testCase.DataItems)
                 {
@@ -77,7 +77,7 @@ namespace TestCaseDescriptionsEditor
             {
                 attrib.Nodes.Add(attribute);
             }
-            currTree.Nodes.Add(currentCase.IsSelected ? "True" : "False");
+            currTree.Nodes.Add("Selected: " + (currentCase.IsSelected ? "True" : "False"));
             data = currTree.Nodes.Add("Data Items");
             foreach (KeyValuePair<string, string> pair in currentCase.DataItems)
             {
@@ -149,6 +149,39 @@ namespace TestCaseDescriptionsEditor
         {
             currentCase = new TestCaseDescription();
             currentCases.Add(currentCase, out errorMessage);
+            PopulateTree();
+            currentCase = currentCases.Descriptions.Find(d => d.Title == "");
+            if (currentCase != null)
+            {
+                txtName.Text = currentCase.Name;
+                txtTitle.Text = currentCase.Title;
+                currentCases.SelectedItem = currentCase;
+                PopulateCurrentTree();
+            }
+        }
+
+        private void btnEditData_Click(object sender, EventArgs e)
+        {
+            DialogResult saveResult;
+            if (currentCase != null)
+            {
+                Dictionary<string, string> dataItems = new Dictionary<string, string>(currentCase.DataItems);
+                FormEditData dataWindow = new FormEditData(dataItems);
+                saveResult = dataWindow.ShowDialog();
+                switch (saveResult)
+                {
+                    case DialogResult.Yes:
+                        currentCase.DataItems = dataWindow.DataItems;
+                        break;
+                    default:
+                        break;
+                }
+                PopulateTree();
+            }
+            else
+            {
+                MessageBox.Show("Select a test case first.", "Error: No test case");
+            }
         }
     }
 }
