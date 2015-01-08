@@ -13,6 +13,7 @@ namespace TestCaseDescriptionsEditor
     public partial class FormEditData : Form
     {
         Dictionary<string, string> m_dataitems;
+        ListViewItem currentItem;
 
         public Dictionary<string, string> DataItems
         {
@@ -53,7 +54,6 @@ namespace TestCaseDescriptionsEditor
             ListViewItem dataItem = listViewDataItems.SelectedItems[0];
             if (dataItem != null)
             {
-                //listViewDataItems.Items.Remove(dataItem);
                 m_dataitems.Remove(dataItem.Text);
                 PopulateList();
             }
@@ -66,7 +66,12 @@ namespace TestCaseDescriptionsEditor
 
         private void listViewDataItems_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (listViewDataItems.SelectedItems.Count > 0)
+            {
+                currentItem = listViewDataItems.SelectedItems[0];
+                textBoxKey.Text = listViewDataItems.SelectedItems[0].Text;
+                textBoxValue.Text = listViewDataItems.SelectedItems[0].SubItems[1].Text;
+            }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -101,6 +106,31 @@ namespace TestCaseDescriptionsEditor
             {
                 MessageBox.Show("Data item does not exist.");
             }
+        }
+
+        private void btnApply_Click(object sender, EventArgs e)
+        {
+            if (textBoxKey.Text == "")
+                MessageBox.Show("Data item must have a key.");
+            else if (currentItem == null)
+                MessageBox.Show("No item to edit.");
+            else if (textBoxKey.Text == currentItem.Text &&
+                        textBoxValue.Text == currentItem.SubItems[1].Text)
+                MessageBox.Show("No changes to apply.");
+            else if (m_dataitems.ContainsKey(textBoxKey.Text))
+                MessageBox.Show("Data item with the same key already exists.");
+            else
+            {
+                m_dataitems.Remove(currentItem.Text);
+                m_dataitems.Add(textBoxKey.Text, textBoxValue.Text);
+                PopulateList();
+                currentItem = null;
+            }
+        }
+
+        private void btnDone_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

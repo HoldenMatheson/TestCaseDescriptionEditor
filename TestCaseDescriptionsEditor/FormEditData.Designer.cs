@@ -40,6 +40,8 @@
             this.Value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnRemove = new System.Windows.Forms.Button();
+            this.btnApply = new System.Windows.Forms.Button();
+            this.btnDone = new System.Windows.Forms.Button();
             this.listViewMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,7 +84,7 @@
             this.Value});
             this.listViewDataItems.ContextMenuStrip = this.listViewMenuStrip;
             this.listViewDataItems.FullRowSelect = true;
-            this.listViewDataItems.Location = new System.Drawing.Point(318, 13);
+            this.listViewDataItems.Location = new System.Drawing.Point(209, 10);
             this.listViewDataItems.MultiSelect = false;
             this.listViewDataItems.Name = "listViewDataItems";
             this.listViewDataItems.Size = new System.Drawing.Size(241, 200);
@@ -118,7 +120,7 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(16, 68);
+            this.btnAdd.Location = new System.Drawing.Point(36, 90);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAdd.TabIndex = 5;
@@ -128,7 +130,7 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(117, 68);
+            this.btnRemove.Location = new System.Drawing.Point(128, 90);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(75, 23);
             this.btnRemove.TabIndex = 6;
@@ -136,11 +138,33 @@
             this.btnRemove.UseVisualStyleBackColor = true;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
+            // btnApply
+            // 
+            this.btnApply.Location = new System.Drawing.Point(67, 59);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(105, 23);
+            this.btnApply.TabIndex = 7;
+            this.btnApply.Text = "Apply Changes";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            // 
+            // btnDone
+            // 
+            this.btnDone.Location = new System.Drawing.Point(67, 186);
+            this.btnDone.Name = "btnDone";
+            this.btnDone.Size = new System.Drawing.Size(75, 23);
+            this.btnDone.TabIndex = 8;
+            this.btnDone.Text = "Done";
+            this.btnDone.UseVisualStyleBackColor = true;
+            this.btnDone.Click += new System.EventHandler(this.btnDone_Click);
+            // 
             // FormEditData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(571, 262);
+            this.ClientSize = new System.Drawing.Size(461, 221);
+            this.Controls.Add(this.btnDone);
+            this.Controls.Add(this.btnApply);
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.listViewDataItems);
@@ -170,5 +194,7 @@
         private System.Windows.Forms.ListView listViewDataItems;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnRemove;
+        private System.Windows.Forms.Button btnApply;
+        private System.Windows.Forms.Button btnDone;
     }
 }
