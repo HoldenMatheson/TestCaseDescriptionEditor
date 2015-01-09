@@ -34,10 +34,12 @@
             this.textBoxKey = new System.Windows.Forms.TextBox();
             this.textBoxValue = new System.Windows.Forms.TextBox();
             this.listViewDataItems = new System.Windows.Forms.ListView();
-            this.listViewMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.mniRemove = new System.Windows.Forms.ToolStripMenuItem();
             this.Key = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.listViewMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mniAdd = new System.Windows.Forms.ToolStripMenuItem();
+            this.msiEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniRemove = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnApply = new System.Windows.Forms.Button();
@@ -92,21 +94,7 @@
             this.listViewDataItems.UseCompatibleStateImageBehavior = false;
             this.listViewDataItems.View = System.Windows.Forms.View.Details;
             this.listViewDataItems.SelectedIndexChanged += new System.EventHandler(this.listViewDataItems_SelectedIndexChanged);
-            // 
-            // listViewMenuStrip
-            // 
-            this.listViewMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mniRemove});
-            this.listViewMenuStrip.Name = "contextMenuStrip1";
-            this.listViewMenuStrip.Size = new System.Drawing.Size(118, 26);
-            this.listViewMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
-            // 
-            // mniRemove
-            // 
-            this.mniRemove.Name = "mniRemove";
-            this.mniRemove.Size = new System.Drawing.Size(117, 22);
-            this.mniRemove.Text = "Remove";
-            this.mniRemove.Click += new System.EventHandler(this.mniRemove_Click);
+            this.listViewDataItems.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewDataItems_MouseDoubleClick);
             // 
             // Key
             // 
@@ -117,6 +105,37 @@
             // 
             this.Value.Text = "Value";
             this.Value.Width = 154;
+            // 
+            // listViewMenuStrip
+            // 
+            this.listViewMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mniAdd,
+            this.msiEdit,
+            this.mniRemove});
+            this.listViewMenuStrip.Name = "contextMenuStrip1";
+            this.listViewMenuStrip.Size = new System.Drawing.Size(153, 92);
+            this.listViewMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // mniAdd
+            // 
+            this.mniAdd.Name = "mniAdd";
+            this.mniAdd.Size = new System.Drawing.Size(152, 22);
+            this.mniAdd.Text = "Add";
+            this.mniAdd.Click += new System.EventHandler(this.mniAdd_Click);
+            // 
+            // msiEdit
+            // 
+            this.msiEdit.Name = "msiEdit";
+            this.msiEdit.Size = new System.Drawing.Size(152, 22);
+            this.msiEdit.Text = "Edit";
+            this.msiEdit.Click += new System.EventHandler(this.msiEdit_Click);
+            // 
+            // mniRemove
+            // 
+            this.mniRemove.Name = "mniRemove";
+            this.mniRemove.Size = new System.Drawing.Size(152, 22);
+            this.mniRemove.Text = "Remove";
+            this.mniRemove.Click += new System.EventHandler(this.mniRemove_Click);
             // 
             // btnAdd
             // 
@@ -196,5 +215,7 @@
         private System.Windows.Forms.Button btnRemove;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnDone;
+        private System.Windows.Forms.ToolStripMenuItem mniAdd;
+        private System.Windows.Forms.ToolStripMenuItem msiEdit;
     }
 }

@@ -44,11 +44,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormPopupDataEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPopupDataEdit.Designer.cs">
+      <DependentUpon>FormPopupDataEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormEditData.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormEditData.Designer.cs">
       <DependentUpon>FormEditData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPopupDataAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPopupDataAdd.Designer.cs">
+      <DependentUpon>FormPopupDataAdd.cs</DependentUpon>
     </Compile>
     <Compile Include="FormTestCaseDescriptions.cs">
       <SubType>Form</SubType>
@@ -61,8 +73,14 @@
     <Compile Include="TestCaseDescription.cs" />
     <Compile Include="TestCaseDescriptions.cs" />
     <Compile Include="XMLEnum.cs" />
+    <EmbeddedResource Include="FormPopupDataEdit.resx">
+      <DependentUpon>FormPopupDataEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormEditData.resx">
       <DependentUpon>FormEditData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPopupDataAdd.resx">
+      <DependentUpon>FormPopupDataAdd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormTestCaseDescriptions.resx">
       <DependentUpon>FormTestCaseDescriptions.cs</DependentUpon>

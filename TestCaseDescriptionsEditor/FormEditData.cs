@@ -27,7 +27,7 @@ namespace TestCaseDescriptionsEditor
             PopulateList();
         }
 
-        //Dictionary-List conversion is based off the dictionary key and listitem's names being the same
+        //Dictionary-List conversion is based off the dictionary key and listitem's Text fields are the same
         private void PopulateList()
         {
             ListViewItem pair;
@@ -131,6 +131,53 @@ namespace TestCaseDescriptionsEditor
         private void btnDone_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void mniAdd_Click(object sender, EventArgs e)
+        {
+            FormPopupDataAdd popadd = new FormPopupDataAdd(m_dataitems);
+            DialogResult popres = popadd.ShowDialog();
+            if (popres == DialogResult.Yes)
+            {
+                m_dataitems.Add(popadd.Key, popadd.Value);
+            }
+            PopulateList();
+        }
+
+        private void listViewDataItems_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listViewDataItems.SelectedItems.Count > 0)
+            {
+                FormPopupDataEdit popedit = new FormPopupDataEdit(m_dataitems, 
+                                                                listViewDataItems.SelectedItems[0].Text, 
+                                                                listViewDataItems.SelectedItems[0].SubItems[1].Text);
+                DialogResult popres = popedit.ShowDialog();
+                if (popres == DialogResult.Yes)
+                {
+                    m_dataitems.Remove(popedit.OldKey);
+                    m_dataitems.Add(popedit.Key, popedit.Value);
+                    PopulateList();
+                    currentItem = null;
+                }
+            }
+        }
+
+        private void msiEdit_Click(object sender, EventArgs e)
+        {
+            if (listViewDataItems.SelectedItems.Count > 0)
+            {
+                FormPopupDataEdit popedit = new FormPopupDataEdit(m_dataitems,
+                                                                listViewDataItems.SelectedItems[0].Text,
+                                                                listViewDataItems.SelectedItems[0].SubItems[1].Text);
+                DialogResult popres = popedit.ShowDialog();
+                if (popres == DialogResult.Yes)
+                {
+                    m_dataitems.Remove(popedit.OldKey);
+                    m_dataitems.Add(popedit.Key, popedit.Value);
+                    PopulateList();
+                    currentItem = null;
+                }
+            }
         }
     }
 }
