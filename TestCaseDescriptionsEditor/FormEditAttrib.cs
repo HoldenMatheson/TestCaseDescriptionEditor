@@ -70,18 +70,7 @@ namespace TestCaseDescriptionsEditor
 
         private void mniEdit_Click(object sender, EventArgs e)
         {
-            if (listViewAttrib.SelectedItems.Count > 0)
-            {
-                FormPopupAttribEdit popedit = new FormPopupAttribEdit(m_attributes, listViewAttrib.SelectedItems[0].Text);
-                DialogResult popres = popedit.ShowDialog();
-                if (popres == DialogResult.Yes)
-                {
-                    m_attributes.Remove(popedit.OldAttrib);
-                    m_attributes.Add(popedit.Attrib);
-                    PopulateList();
-                    changesToSave = true;
-                }
-            }
+            editAttrib();
         }
 
         private void mniRemove_Click(object sender, EventArgs e)
@@ -99,6 +88,27 @@ namespace TestCaseDescriptionsEditor
         {
             mniRemove.Enabled = (listViewAttrib.SelectedItems.Count > 0);
             mniEdit.Enabled = (listViewAttrib.SelectedItems.Count > 0);
+        }
+
+        private void listViewAttrib_DoubleClick(object sender, EventArgs e)
+        {
+            editAttrib();
+        }
+
+        private void editAttrib()
+        {
+            if (listViewAttrib.SelectedItems.Count > 0)
+            {
+                FormPopupAttribEdit popedit = new FormPopupAttribEdit(m_attributes, listViewAttrib.SelectedItems[0].Text);
+                DialogResult popres = popedit.ShowDialog();
+                if (popres == DialogResult.Yes)
+                {
+                    m_attributes.Remove(popedit.OldAttrib);
+                    m_attributes.Add(popedit.Attrib);
+                    PopulateList();
+                    changesToSave = true;
+                }
+            }
         }
     }
 }

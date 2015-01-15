@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtTitle = new System.Windows.Forms.TextBox();
@@ -44,6 +45,16 @@
             this.fullTree = new System.Windows.Forms.TreeView();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
+            this.fullTreeStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mniAdd = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniRemove = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniAddTest = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniAddAttribute = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniAddData = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniMoveUp = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniMoveDown = new System.Windows.Forms.ToolStripMenuItem();
+            this.fullTreeStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -166,6 +177,7 @@
             // 
             // fullTree
             // 
+            this.fullTree.ContextMenuStrip = this.fullTreeStrip;
             this.fullTree.Location = new System.Drawing.Point(393, 48);
             this.fullTree.Name = "fullTree";
             this.fullTree.Size = new System.Drawing.Size(523, 494);
@@ -193,6 +205,74 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
+            // fullTreeStrip
+            // 
+            this.fullTreeStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mniAdd,
+            this.mniEdit,
+            this.mniRemove,
+            this.mniMoveUp,
+            this.mniMoveDown});
+            this.fullTreeStrip.Name = "fullTreeStrip";
+            this.fullTreeStrip.Size = new System.Drawing.Size(153, 136);
+            this.fullTreeStrip.Opening += new System.ComponentModel.CancelEventHandler(this.fullTreeStrip_Opening);
+            // 
+            // mniAdd
+            // 
+            this.mniAdd.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mniAddTest,
+            this.mniAddAttribute,
+            this.mniAddData});
+            this.mniAdd.Name = "mniAdd";
+            this.mniAdd.Size = new System.Drawing.Size(152, 22);
+            this.mniAdd.Text = "Add";
+            // 
+            // mniEdit
+            // 
+            this.mniEdit.Name = "mniEdit";
+            this.mniEdit.Size = new System.Drawing.Size(152, 22);
+            this.mniEdit.Text = "Edit";
+            this.mniEdit.Click += new System.EventHandler(this.mniEdit_Click);
+            // 
+            // mniRemove
+            // 
+            this.mniRemove.Name = "mniRemove";
+            this.mniRemove.Size = new System.Drawing.Size(152, 22);
+            this.mniRemove.Text = "Remove";
+            // 
+            // mniAddTest
+            // 
+            this.mniAddTest.Name = "mniAddTest";
+            this.mniAddTest.Size = new System.Drawing.Size(152, 22);
+            this.mniAddTest.Text = "Test Case";
+            this.mniAddTest.Click += new System.EventHandler(this.mniAddTest_Click);
+            // 
+            // mniAddAttribute
+            // 
+            this.mniAddAttribute.Name = "mniAddAttribute";
+            this.mniAddAttribute.Size = new System.Drawing.Size(152, 22);
+            this.mniAddAttribute.Text = "Attribute";
+            this.mniAddAttribute.Click += new System.EventHandler(this.mniAddAttribute_Click);
+            // 
+            // mniAddData
+            // 
+            this.mniAddData.Name = "mniAddData";
+            this.mniAddData.Size = new System.Drawing.Size(152, 22);
+            this.mniAddData.Text = "Data Item";
+            this.mniAddData.Click += new System.EventHandler(this.mniAddData_Click);
+            // 
+            // mniMoveUp
+            // 
+            this.mniMoveUp.Name = "mniMoveUp";
+            this.mniMoveUp.Size = new System.Drawing.Size(152, 22);
+            this.mniMoveUp.Text = "Move Up";
+            // 
+            // mniMoveDown
+            // 
+            this.mniMoveDown.Name = "mniMoveDown";
+            this.mniMoveDown.Size = new System.Drawing.Size(152, 22);
+            this.mniMoveDown.Text = "Move Down";
+            // 
             // FormTestCaseDescriptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -217,6 +297,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormTestCaseDescriptions";
             this.Text = "XML Editor";
+            this.fullTreeStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -240,6 +321,15 @@
         private System.Windows.Forms.TreeView fullTree;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.ContextMenuStrip fullTreeStrip;
+        private System.Windows.Forms.ToolStripMenuItem mniAdd;
+        private System.Windows.Forms.ToolStripMenuItem mniAddTest;
+        private System.Windows.Forms.ToolStripMenuItem mniAddAttribute;
+        private System.Windows.Forms.ToolStripMenuItem mniAddData;
+        private System.Windows.Forms.ToolStripMenuItem mniEdit;
+        private System.Windows.Forms.ToolStripMenuItem mniRemove;
+        private System.Windows.Forms.ToolStripMenuItem mniMoveUp;
+        private System.Windows.Forms.ToolStripMenuItem mniMoveDown;
     }
 }
 

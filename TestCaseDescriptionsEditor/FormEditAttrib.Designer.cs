@@ -31,11 +31,11 @@
             this.components = new System.ComponentModel.Container();
             this.btnDone = new System.Windows.Forms.Button();
             this.listViewAttrib = new System.Windows.Forms.ListView();
+            this.Attribs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.listViewMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mniAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.mniEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.mniRemove = new System.Windows.Forms.ToolStripMenuItem();
-            this.Attribs = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.listViewMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,6 +54,7 @@
             this.listViewAttrib.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Attribs});
             this.listViewAttrib.ContextMenuStrip = this.listViewMenuStrip;
+            this.listViewAttrib.FullRowSelect = true;
             this.listViewAttrib.Location = new System.Drawing.Point(13, 13);
             this.listViewAttrib.MultiSelect = false;
             this.listViewAttrib.Name = "listViewAttrib";
@@ -61,6 +62,12 @@
             this.listViewAttrib.TabIndex = 2;
             this.listViewAttrib.UseCompatibleStateImageBehavior = false;
             this.listViewAttrib.View = System.Windows.Forms.View.Details;
+            this.listViewAttrib.DoubleClick += new System.EventHandler(this.listViewAttrib_DoubleClick);
+            // 
+            // Attribs
+            // 
+            this.Attribs.Text = "Attributes";
+            this.Attribs.Width = 255;
             // 
             // listViewMenuStrip
             // 
@@ -93,13 +100,9 @@
             this.mniRemove.Text = "Remove";
             this.mniRemove.Click += new System.EventHandler(this.mniRemove_Click);
             // 
-            // Attribs
-            // 
-            this.Attribs.Text = "Attributes";
-            this.Attribs.Width = 255;
-            // 
             // FormEditAttrib
             // 
+            this.AcceptButton = this.btnDone;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
