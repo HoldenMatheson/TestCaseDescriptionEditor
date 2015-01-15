@@ -38,13 +38,14 @@ namespace TestCaseDescriptionsEditor
         {
             m_key = textBoxKey.Text;
             m_value = textBoxValue.Text;
-            if (!m_dataitems.ContainsKey(m_key))
+            if (m_key == "")
+                MessageBox.Show("Input valid key.");
+            else if (!m_dataitems.ContainsKey(m_key))
             {
                 this.DialogResult = DialogResult.Yes;
                 this.Close();
             }
-            else if (m_key == "")
-                MessageBox.Show("Input valid key.");
+            
             else
                 MessageBox.Show("Key already exists.");
         }

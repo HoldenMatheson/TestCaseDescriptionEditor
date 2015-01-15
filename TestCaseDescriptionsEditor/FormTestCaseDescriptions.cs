@@ -36,6 +36,8 @@ namespace TestCaseDescriptionsEditor
 
         private void PopulateTree()
         {
+            // Node names used to parse nodes to data structure. Changing node names may require
+            // changes to fullTree_NodeMouseDoubleClick
             fullTree.Nodes.Clear();
             TreeNode node = new TreeNode();
             TreeNode attrib = new TreeNode();
@@ -90,7 +92,13 @@ namespace TestCaseDescriptionsEditor
         {
             if (e.Node.Bounds.Contains(e.Location))
             {
-                currentCase = currentCases.Descriptions.Find(d => d.Title == e.Node.Text);
+                TreeNode parentCase = e.Node;
+                while (parentCase.Parent != null && parentCase.Parent.Text != "TestCaseDescriptions")
+                {
+                    parentCase = parentCase.Parent;
+                }
+                if (parentCase.Parent != null)
+                    currentCase = currentCases.Descriptions.Find(d => d.Title == parentCase.Text);
                 if (currentCase != null)
                 {
                     txtName.Text = currentCase.Name;
@@ -140,9 +148,14 @@ namespace TestCaseDescriptionsEditor
 
         private void btnApply_Click(object sender, EventArgs e)
         {
-            currentCase.Name = txtName.Text;
-            currentCase.Title = txtTitle.Text;
-            PopulateTree();
+            if (currentCase != null)
+            {
+                currentCase.Name = txtName.Text;
+                currentCase.Title = txtTitle.Text;
+                PopulateTree();
+            }
+            else
+                MessageBox.Show("No test case selected.");
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -161,6 +174,11 @@ namespace TestCaseDescriptionsEditor
         }
 
         private void btnEditData_Click(object sender, EventArgs e)
+        {
+            editData();
+        }
+
+        private void editData()
         {
             DialogResult saveResult;
             if (currentCase != null)
@@ -182,6 +200,78 @@ namespace TestCaseDescriptionsEditor
             {
                 MessageBox.Show("Select a test case first.", "Error: No test case");
             }
+        }
+
+        private void editAttrib()
+        {
+            DialogResult saveResult;
+            if (currentCase != null)
+            {
+                List<String> attributes = new List<String>(currentCase.Attributes);
+                FormEditAttrib attribWindow = new FormEditAttrib(attributes);
+                saveResult = attribWindow.ShowDialog();
+                switch (saveResult)
+                {
+                    case DialogResult.Yes:
+                        currentCase.Attributes = attribWindow.Attributes;
+                        break;
+                    default:
+                        break;
+                }
+                PopulateTree();
+            }
+            else
+            {
+                MessageBox.Show("Select a test case first.", "Error: No test case");
+            }
+        }
+
+        private void fullTree_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Bounds.Contains(e.Location) && e.Node.Parent != null)
+            {
+                DialogResult popres;
+                // If double clicked a data item, open it for editing
+                if (e.Node.Parent.Text.Equals("Data Items"))
+                {
+                    if (e.Node.Text.StartsWith("Key: "))
+                    {
+                        FormPopupDataEdit popedit = new FormPopupDataEdit(currentCase.DataItems, e.Node.Text.Substring(5),e.Node.NextNode.Text.Substring(7));
+                        popres = popedit.ShowDialog();
+                        if (popres == DialogResult.Yes)
+                        {
+                            currentCase.DataItems.Remove(popedit.OldKey);
+                            currentCase.DataItems.Add(popedit.Key, popedit.Value);
+                            PopulateTree();
+                            PopulateCurrentTree();
+                        }
+                    }
+                    else if (e.Node.Text.StartsWith("Value: "))
+                    {
+                        FormPopupDataEdit popedit = new FormPopupDataEdit(currentCase.DataItems, e.Node.PrevNode.Text.Substring(5), e.Node.Text.Substring(7));
+                        popres = popedit.ShowDialog();
+                        if (popres == DialogResult.Yes)
+                        {
+                            currentCase.DataItems.Remove(popedit.OldKey);
+                            currentCase.DataItems.Add(popedit.Key, popedit.Value);
+                            PopulateTree();
+                            PopulateCurrentTree();
+                        }
+                    }
+                    else
+                        MessageBox.Show("Malformed Data Item: " + e.Node.Text);
+                    
+                }
+                else if(e.Node.Text.Equals("Data Items"))
+                {
+                    editData();
+                }
+            }
+        }
+
+        private void btnEditAttrib_Click(object sender, EventArgs e)
+        {
+            editAttrib();
         }
     }
 }

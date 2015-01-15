@@ -44,6 +44,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormEditAttrib.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormEditAttrib.Designer.cs">
+      <DependentUpon>FormEditAttrib.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPopupAttribAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPopupAttribAdd.Designer.cs">
+      <DependentUpon>FormPopupAttribAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPopupAttribEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPopupAttribEdit.Designer.cs">
+      <DependentUpon>FormPopupAttribEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormPopupDataEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +91,15 @@
     <Compile Include="TestCaseDescription.cs" />
     <Compile Include="TestCaseDescriptions.cs" />
     <Compile Include="XMLEnum.cs" />
+    <EmbeddedResource Include="FormEditAttrib.resx">
+      <DependentUpon>FormEditAttrib.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPopupAttribAdd.resx">
+      <DependentUpon>FormPopupAttribAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPopupAttribEdit.resx">
+      <DependentUpon>FormPopupAttribEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormPopupDataEdit.resx">
       <DependentUpon>FormPopupDataEdit.cs</DependentUpon>
     </EmbeddedResource>

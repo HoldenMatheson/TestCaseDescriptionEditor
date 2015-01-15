@@ -14,6 +14,7 @@ namespace TestCaseDescriptionsEditor
     {
         Dictionary<string, string> m_dataitems;
         ListViewItem currentItem;
+        bool changesToSave;
 
         public Dictionary<string, string> DataItems
         {
@@ -23,6 +24,7 @@ namespace TestCaseDescriptionsEditor
         public FormEditData(Dictionary<string, string> dataitems)
         {
             m_dataitems = dataitems;
+            changesToSave = false;
             InitializeComponent();
             PopulateList();
         }
@@ -42,11 +44,14 @@ namespace TestCaseDescriptionsEditor
 
         private void FormEditData_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult msgResult = MessageBox.Show("Do you want to save changes?", "Save changes", MessageBoxButtons.YesNoCancel);
-            if (msgResult == DialogResult.Cancel)
-                e.Cancel = true;
-            else
-                this.DialogResult = msgResult;
+            if (changesToSave)
+            {
+                DialogResult msgResult = MessageBox.Show("Do you want to save changes?", "Save changes", MessageBoxButtons.YesNoCancel);
+                if (msgResult == DialogResult.Cancel)
+                    e.Cancel = true;
+                else
+                    this.DialogResult = msgResult;
+            }
         }
 
         private void mniRemove_Click(object sender, EventArgs e)
@@ -55,6 +60,7 @@ namespace TestCaseDescriptionsEditor
             if (dataItem != null)
             {
                 m_dataitems.Remove(dataItem.Text);
+                changesToSave = true;
                 PopulateList();
             }
         }
@@ -62,6 +68,7 @@ namespace TestCaseDescriptionsEditor
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
             mniRemove.Enabled = (listViewDataItems.SelectedItems.Count > 0);
+            msiEdit.Enabled = (listViewDataItems.SelectedItems.Count > 0);
         }
 
         private void listViewDataItems_SelectedIndexChanged(object sender, EventArgs e)
@@ -84,6 +91,7 @@ namespace TestCaseDescriptionsEditor
             {
                 m_dataitems.Add(textBoxKey.Text, textBoxValue.Text);
                 PopulateList();
+                changesToSave = true;
             }
             else
             {
@@ -101,6 +109,7 @@ namespace TestCaseDescriptionsEditor
             {
                 m_dataitems.Remove(textBoxKey.Text);
                 PopulateList();
+                changesToSave = true;
             }
             else
             {
@@ -125,6 +134,7 @@ namespace TestCaseDescriptionsEditor
                 m_dataitems.Add(textBoxKey.Text, textBoxValue.Text);
                 PopulateList();
                 currentItem = null;
+                changesToSave = true;
             }
         }
 
@@ -140,6 +150,7 @@ namespace TestCaseDescriptionsEditor
             if (popres == DialogResult.Yes)
             {
                 m_dataitems.Add(popadd.Key, popadd.Value);
+                changesToSave = true;
             }
             PopulateList();
         }
@@ -158,6 +169,7 @@ namespace TestCaseDescriptionsEditor
                     m_dataitems.Add(popedit.Key, popedit.Value);
                     PopulateList();
                     currentItem = null;
+                    changesToSave = true;
                 }
             }
         }
@@ -176,6 +188,7 @@ namespace TestCaseDescriptionsEditor
                     m_dataitems.Add(popedit.Key, popedit.Value);
                     PopulateList();
                     currentItem = null;
+                    changesToSave = true;
                 }
             }
         }

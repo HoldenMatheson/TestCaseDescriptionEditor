@@ -96,6 +96,7 @@
             this.btnEditAttrib.TabIndex = 6;
             this.btnEditAttrib.Text = "Edit Attributes";
             this.btnEditAttrib.UseVisualStyleBackColor = true;
+            this.btnEditAttrib.Click += new System.EventHandler(this.btnEditAttrib_Click);
             // 
             // label3
             // 
@@ -170,6 +171,7 @@
             this.fullTree.Size = new System.Drawing.Size(523, 494);
             this.fullTree.TabIndex = 14;
             this.fullTree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.fullTree_NodeMouseClick);
+            this.fullTree.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.fullTree_NodeMouseDoubleClick);
             // 
             // btnApply
             // 

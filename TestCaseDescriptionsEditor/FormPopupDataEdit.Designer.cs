@@ -80,6 +80,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(117, 61);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -88,10 +89,12 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // FormPopupDataAdd
+            // FormPopupDataEdit
             // 
+            this.AcceptButton = this.btnEdit;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(215, 97);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnEdit);
@@ -99,7 +102,7 @@
             this.Controls.Add(this.textBoxKey);
             this.Controls.Add(this.labelvalue);
             this.Controls.Add(this.labelkey);
-            this.Name = "FormPopupDataAdd";
+            this.Name = "FormPopupDataEdit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Edit Data Item";
             this.ResumeLayout(false);
