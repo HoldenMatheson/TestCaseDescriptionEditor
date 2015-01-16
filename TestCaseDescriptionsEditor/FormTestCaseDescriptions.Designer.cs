@@ -43,17 +43,17 @@
             this.btnMoveDown = new System.Windows.Forms.Button();
             this.btnKill = new System.Windows.Forms.Button();
             this.fullTree = new System.Windows.Forms.TreeView();
-            this.btnApply = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
             this.fullTreeStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mniAdd = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.mniRemove = new System.Windows.Forms.ToolStripMenuItem();
             this.mniAddTest = new System.Windows.Forms.ToolStripMenuItem();
             this.mniAddAttribute = new System.Windows.Forms.ToolStripMenuItem();
             this.mniAddData = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.mniRemove = new System.Windows.Forms.ToolStripMenuItem();
             this.mniMoveUp = new System.Windows.Forms.ToolStripMenuItem();
             this.mniMoveDown = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnApply = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.fullTreeStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -185,26 +185,6 @@
             this.fullTree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.fullTree_NodeMouseClick);
             this.fullTree.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.fullTree_NodeMouseDoubleClick);
             // 
-            // btnApply
-            // 
-            this.btnApply.Location = new System.Drawing.Point(186, 158);
-            this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(134, 23);
-            this.btnApply.TabIndex = 15;
-            this.btnApply.Text = "Apply Changes";
-            this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Location = new System.Drawing.Point(97, 519);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnAdd.TabIndex = 16;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
             // fullTreeStrip
             // 
             this.fullTreeStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -227,6 +207,27 @@
             this.mniAdd.Size = new System.Drawing.Size(152, 22);
             this.mniAdd.Text = "Add";
             // 
+            // mniAddTest
+            // 
+            this.mniAddTest.Name = "mniAddTest";
+            this.mniAddTest.Size = new System.Drawing.Size(125, 22);
+            this.mniAddTest.Text = "Test Case";
+            this.mniAddTest.Click += new System.EventHandler(this.mniAddTest_Click);
+            // 
+            // mniAddAttribute
+            // 
+            this.mniAddAttribute.Name = "mniAddAttribute";
+            this.mniAddAttribute.Size = new System.Drawing.Size(125, 22);
+            this.mniAddAttribute.Text = "Attribute";
+            this.mniAddAttribute.Click += new System.EventHandler(this.mniAddAttribute_Click);
+            // 
+            // mniAddData
+            // 
+            this.mniAddData.Name = "mniAddData";
+            this.mniAddData.Size = new System.Drawing.Size(125, 22);
+            this.mniAddData.Text = "Data Item";
+            this.mniAddData.Click += new System.EventHandler(this.mniAddData_Click);
+            // 
             // mniEdit
             // 
             this.mniEdit.Name = "mniEdit";
@@ -239,39 +240,41 @@
             this.mniRemove.Name = "mniRemove";
             this.mniRemove.Size = new System.Drawing.Size(152, 22);
             this.mniRemove.Text = "Remove";
-            // 
-            // mniAddTest
-            // 
-            this.mniAddTest.Name = "mniAddTest";
-            this.mniAddTest.Size = new System.Drawing.Size(152, 22);
-            this.mniAddTest.Text = "Test Case";
-            this.mniAddTest.Click += new System.EventHandler(this.mniAddTest_Click);
-            // 
-            // mniAddAttribute
-            // 
-            this.mniAddAttribute.Name = "mniAddAttribute";
-            this.mniAddAttribute.Size = new System.Drawing.Size(152, 22);
-            this.mniAddAttribute.Text = "Attribute";
-            this.mniAddAttribute.Click += new System.EventHandler(this.mniAddAttribute_Click);
-            // 
-            // mniAddData
-            // 
-            this.mniAddData.Name = "mniAddData";
-            this.mniAddData.Size = new System.Drawing.Size(152, 22);
-            this.mniAddData.Text = "Data Item";
-            this.mniAddData.Click += new System.EventHandler(this.mniAddData_Click);
+            this.mniRemove.Click += new System.EventHandler(this.mniRemove_Click);
             // 
             // mniMoveUp
             // 
             this.mniMoveUp.Name = "mniMoveUp";
             this.mniMoveUp.Size = new System.Drawing.Size(152, 22);
             this.mniMoveUp.Text = "Move Up";
+            this.mniMoveUp.Click += new System.EventHandler(this.mniMoveUp_Click);
             // 
             // mniMoveDown
             // 
             this.mniMoveDown.Name = "mniMoveDown";
             this.mniMoveDown.Size = new System.Drawing.Size(152, 22);
             this.mniMoveDown.Text = "Move Down";
+            this.mniMoveDown.Click += new System.EventHandler(this.mniMoveDown_Click);
+            // 
+            // btnApply
+            // 
+            this.btnApply.Location = new System.Drawing.Point(186, 158);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(134, 23);
+            this.btnApply.TabIndex = 15;
+            this.btnApply.Text = "Apply Changes";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Location = new System.Drawing.Point(97, 519);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.TabIndex = 16;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // FormTestCaseDescriptions
             // 

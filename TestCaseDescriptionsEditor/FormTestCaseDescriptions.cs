@@ -47,8 +47,8 @@ namespace TestCaseDescriptionsEditor
             foreach(TestCaseDescription testCase in currentCases.Descriptions)
             {
                 node = root.Nodes.Add(testCase.Title);
-                node.Nodes.Add("Name: " +    testCase.Name);
-                node.Nodes.Add("Title: " +   testCase.Title);
+                node.Nodes.Add("Name: "    + testCase.Name);
+                node.Nodes.Add("Title: "   + testCase.Title);
                 node.Nodes.Add("Timeout: " + testCase.Timeout.ToString());
                 attrib = node.Nodes.Add("Attributes");
                 foreach (String attribute in testCase.Attributes)
@@ -83,7 +83,7 @@ namespace TestCaseDescriptionsEditor
             data = currTree.Nodes.Add("Data Items");
             foreach (KeyValuePair<string, string> pair in currentCase.DataItems)
             {
-                data.Nodes.Add("Key: " + pair.Key);
+                data.Nodes.Add("Key: "   + pair.Key);
                 data.Nodes.Add("Value: " + pair.Value);
             }
         }
@@ -232,6 +232,51 @@ namespace TestCaseDescriptionsEditor
             }
         }
 
+        private void editName()
+        {
+            FormPopupNameEdit popedit = new FormPopupNameEdit(currentCases.Descriptions, currentCase.Name);
+            DialogResult popres = popedit.ShowDialog();
+            if (popres == DialogResult.Yes)
+            {
+                currentCase.Name = popedit.Name;
+                PopulateTree();
+            }
+        }
+
+        private void editTitle()
+        {
+            FormPopupTitleEdit popedit = new FormPopupTitleEdit(currentCase.Title);
+            DialogResult popres = popedit.ShowDialog();
+            if (popres == DialogResult.Yes)
+            {
+                currentCase.Title = popedit.Title;
+                PopulateTree();
+            }
+        }
+
+        private void editTimeout()
+        {
+            FormPopupTimeoutEdit popedit = new FormPopupTimeoutEdit(currentCase.Timeout);
+            DialogResult popres = popedit.ShowDialog();
+            if (popres == DialogResult.Yes)
+            {
+                currentCase.Timeout = popedit.Timeout;
+                PopulateTree();
+            }
+        }
+
+        private void editAttribute()
+        {
+            FormPopupAttribEdit popedit = new FormPopupAttribEdit(currentCase.Attributes, fullTree.SelectedNode.Text);
+            DialogResult popres = popedit.ShowDialog();
+            if (popres == DialogResult.Yes)
+            {
+                int index = currentCase.Attributes.IndexOf(popedit.OldAttrib);
+                currentCase.Attributes[index] = popedit.Attrib;
+                PopulateTree();
+            }
+        }
+
         private void fullTree_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Node.Bounds.Contains(e.Location) && e.Node.Parent != null)
@@ -242,7 +287,7 @@ namespace TestCaseDescriptionsEditor
                 {
                     if (e.Node.Text.StartsWith("Key: "))
                     {
-                        FormPopupDataEdit popedit = new FormPopupDataEdit(currentCase.DataItems, e.Node.Text.Substring(5),e.Node.NextNode.Text.Substring(7));
+                        FormPopupDataEdit popedit = new FormPopupDataEdit(currentCase.DataItems, e.Node.Text.Substring(5), e.Node.NextNode.Text.Substring(7));
                         popres = popedit.ShowDialog();
                         if (popres == DialogResult.Yes)
                         {
@@ -266,11 +311,31 @@ namespace TestCaseDescriptionsEditor
                     }
                     else
                         MessageBox.Show("Malformed Data Item: " + e.Node.Text);
-                    
+
                 }
-                else if(e.Node.Text.Equals("Data Items"))
+                else if (e.Node.Text.Equals("Data Items"))
                 {
                     editData();
+                }
+                else if (e.Node.Text.Equals("Attributes"))
+                {
+                    editAttrib();
+                }
+                else if (e.Node.Parent.Text.Equals("Attributes"))
+                {
+                    editAttribute();
+                }
+                else if (e.Node.Text.StartsWith("Name: "))
+                {
+                    editName();
+                }
+                else if (e.Node.Text.StartsWith("Title: "))
+                {
+                    editTitle();
+                }
+                else if (e.Node.Text.StartsWith("Timeout: "))
+                {
+                    editTimeout();
                 }
             }
         }
@@ -389,39 +454,106 @@ namespace TestCaseDescriptionsEditor
 
             else if (fullTree.SelectedNode.Text.StartsWith("Name: "))
             {
-                FormPopupNameEdit popedit = new FormPopupNameEdit(currentCases.Descriptions, currentCase.Name);
-                DialogResult popres = popedit.ShowDialog();
-                if (popres == DialogResult.Yes)
-                {
-                    currentCase.Name = popedit.Name;
-                    PopulateTree();
-                }
+                editName();
             }
 
             else if (fullTree.SelectedNode.Text.StartsWith("Title: "))
             {
-                FormPopupTitleEdit popedit = new FormPopupTitleEdit(currentCase.Title);
-                DialogResult popres = popedit.ShowDialog();
-                if (popres == DialogResult.Yes)
-                {
-                    currentCase.Title = popedit.Title;
-                    PopulateTree();
-                }
+                editTitle();
             }
 
             else if (fullTree.SelectedNode.Text.StartsWith("Timeout: "))
             {
-                FormPopupTimeoutEdit popedit = new FormPopupTimeoutEdit(currentCase.Timeout);
-                DialogResult popres = popedit.ShowDialog();
-                if (popres == DialogResult.Yes)
-                {
-                    currentCase.Timeout = popedit.Timeout;
-                    PopulateTree();
-                }
+                editTimeout();
             }
-
+            else if (fullTree.SelectedNode.Parent.Text.Equals("Attributes"))
+            {
+                editAttribute();
+            }
             else
                 MessageBox.Show("Error: This node should not be editable!");
+        }
+
+        private void mniRemove_Click(object sender, EventArgs e)
+        {
+            if (currentCase != null)
+            {
+                if (fullTree.SelectedNode.Parent.Text.Equals("TestCaseDescriptions"))
+                {
+                    currentCases.Remove(currentCase, out errorMessage);
+                    PopulateTree();
+                }
+                else if (fullTree.SelectedNode.Parent.Text.Equals("Attributes"))
+                {
+                    currentCase.Attributes.Remove(fullTree.SelectedNode.Text);
+                    PopulateTree();
+                }
+                else if (fullTree.SelectedNode.Parent.Text.Equals("Data Items"))
+                {
+                    if(fullTree.SelectedNode.Text.StartsWith("Key: "))
+                        currentCase.DataItems.Remove(fullTree.SelectedNode.Text.Substring(5));
+                    else
+                        currentCase.DataItems.Remove(fullTree.SelectedNode.PrevNode.Text.Substring(5));
+                    PopulateTree();
+                }
+                else
+                    MessageBox.Show("Error: This node should not be removable!");
+            }
+            else
+                MessageBox.Show("Error: there should always be a selected case when remove is called!");
+        }
+
+        private void mniMoveUp_Click(object sender, EventArgs e)
+        {
+            if (currentCase != null)
+            {
+                if (fullTree.SelectedNode.Parent.Text.Equals("TestCaseDescriptions"))
+                {
+                    currentCases.MoveUp(currentCase, out errorMessage);
+                    PopulateTree();
+                }
+                else if (fullTree.SelectedNode.Parent.Text.Equals("Attributes"))
+                {
+                    string attrib = fullTree.SelectedNode.Text;
+                    int oldindex = currentCase.Attributes.IndexOf(attrib);
+                    currentCase.Attributes.RemoveAt(oldindex);
+
+                    //Tertiary operator prevents index underflow
+                    currentCase.Attributes.Insert((oldindex > 0) ? oldindex - 1 : oldindex, attrib);
+                    PopulateTree();
+                    PopulateTree();
+                }
+                else
+                    MessageBox.Show("Error: This node should not be movable!");
+            }
+            else
+                MessageBox.Show("Error: there should always be a selected case when move up is called!");
+        }
+
+        private void mniMoveDown_Click(object sender, EventArgs e)
+        {
+            if (currentCase != null)
+            {
+                if (fullTree.SelectedNode.Parent.Text.Equals("TestCaseDescriptions"))
+                {
+                    currentCases.MoveDown(currentCase, out errorMessage);
+                    PopulateTree();
+                }
+                else if (fullTree.SelectedNode.Parent.Text.Equals("Attributes"))
+                {
+                    string attrib = fullTree.SelectedNode.Text;
+                    int oldindex = currentCase.Attributes.IndexOf(attrib);
+                    currentCase.Attributes.RemoveAt(oldindex);
+
+                    //Tertiary operator prevents index overflow
+                    currentCase.Attributes.Insert((oldindex < (currentCase.Attributes.Count - 1)) ? oldindex + 1 : oldindex, attrib);
+                    PopulateTree();
+                }
+                else
+                    MessageBox.Show("Error: This node should not be movable!");
+            }
+            else
+                MessageBox.Show("Error: there should always be a selected case when move down is called!");
         }
     }
 }
