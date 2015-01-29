@@ -12,55 +12,55 @@ using System.Xml.Linq;
 namespace TestCaseDescriptionsEditor
 {
     public partial class FormTestCaseDescriptions : Form
-    {
+    {        
         TestCaseDescriptions currentCases = new TestCaseDescriptions();
         TestCaseDescription currentCase;
         String errorMessage;
+        string currentFilename;
+
+        //Tree prefixes and names used for node identification
+        const string treePrefixName     = "Name: ";
+        const string treePrefixTitle    = "Title: ";
+        const string treePrefixTimeout  = "Timeout: ";
+        const string treePrefixSelected = "Selected: ";
+        const string treePrefixKey      = "Key: ";
+        const string treePrefixValue    = "Value: ";
+        const string treeNameRoot       = "TestCaseDescriptions";
+        const string treeNameAttributes = "Attributes";
+        const string treeNameDataItems  = "Data Items";
+        const string defaultFileName    = "TestCaseDescriptions";
 
         public FormTestCaseDescriptions()
         {
             InitializeComponent();
-        }
-
-        private void btnLoad_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFile = new OpenFileDialog();
-            DialogResult diagResult = openFile.ShowDialog();
-            if (diagResult == DialogResult.OK)
-            {
-                String filename = openFile.FileName;
-                currentCases.LoadXML(filename, out errorMessage);
-                PopulateTree();
-            }
+            currentFilename = null;
         }
 
         private void PopulateTree()
         {
-            // Node names used to parse nodes to data structure. Changing node names may require
-            // changes to fullTree_NodeMouseDoubleClick
             fullTree.Nodes.Clear();
             TreeNode node = new TreeNode();
             TreeNode attrib = new TreeNode();
             TreeNode data = new TreeNode();
             TreeNode root = new TreeNode();
-            root = fullTree.Nodes.Add("TestCaseDescriptions");
+            root = fullTree.Nodes.Add(treeNameRoot);
             foreach(TestCaseDescription testCase in currentCases.Descriptions)
             {
                 node = root.Nodes.Add(testCase.Title);
-                node.Nodes.Add("Name: "    + testCase.Name);
-                node.Nodes.Add("Title: "   + testCase.Title);
-                node.Nodes.Add("Timeout: " + testCase.Timeout.ToString());
-                attrib = node.Nodes.Add("Attributes");
+                node.Nodes.Add(treePrefixName    + testCase.Name);
+                node.Nodes.Add(treePrefixTitle   + testCase.Title);
+                node.Nodes.Add(treePrefixTimeout + testCase.Timeout.ToString());
+                attrib = node.Nodes.Add(treeNameAttributes);
                 foreach (String attribute in testCase.Attributes)
                 {
                     attrib.Nodes.Add(attribute);
                 }
-                node.Nodes.Add("Selected: " + (testCase.IsSelected ? "True" : "False"));
-                data = node.Nodes.Add("Data Items");
+                node.Nodes.Add(treePrefixSelected + (testCase.IsSelected ? "True" : "False"));
+                data = node.Nodes.Add(treeNameDataItems);
                 foreach (KeyValuePair<string, string> pair in testCase.DataItems)
                 {
-                    data.Nodes.Add("Key: " + pair.Key);
-                    data.Nodes.Add("Value: " + pair.Value);
+                    data.Nodes.Add(treePrefixKey + pair.Key);
+                    data.Nodes.Add(treePrefixValue + pair.Value);
                 }
             }
             fullTree.Nodes[0].Expand();
@@ -71,20 +71,20 @@ namespace TestCaseDescriptionsEditor
             currTree.Nodes.Clear();
             TreeNode attrib = new TreeNode();
             TreeNode data = new TreeNode();
-            currTree.Nodes.Add("Name: " + currentCase.Name);
-            currTree.Nodes.Add("Title: " + currentCase.Title);
-            currTree.Nodes.Add("Timeout: " + currentCase.Timeout.ToString());
-            attrib = currTree.Nodes.Add("Attributes");
+            currTree.Nodes.Add(treePrefixName    + currentCase.Name);
+            currTree.Nodes.Add(treePrefixTitle   + currentCase.Title);
+            currTree.Nodes.Add(treePrefixTimeout + currentCase.Timeout.ToString());
+            attrib = currTree.Nodes.Add(treeNameAttributes);
             foreach (String attribute in currentCase.Attributes)
             {
                 attrib.Nodes.Add(attribute);
             }
-            currTree.Nodes.Add("Selected: " + (currentCase.IsSelected ? "True" : "False"));
-            data = currTree.Nodes.Add("Data Items");
+            currTree.Nodes.Add(treePrefixSelected + (currentCase.IsSelected ? "True" : "False"));
+            data = currTree.Nodes.Add(treeNameDataItems);
             foreach (KeyValuePair<string, string> pair in currentCase.DataItems)
             {
-                data.Nodes.Add("Key: "   + pair.Key);
-                data.Nodes.Add("Value: " + pair.Value);
+                data.Nodes.Add(treePrefixKey   + pair.Key);
+                data.Nodes.Add(treePrefixValue + pair.Value);
             }
         }
 
@@ -94,7 +94,7 @@ namespace TestCaseDescriptionsEditor
             {
                 fullTree.SelectedNode = e.Node;
                 TreeNode parentCase = e.Node;
-                while (parentCase.Parent != null && parentCase.Parent.Text != "TestCaseDescriptions")
+                while (parentCase.Parent != null && parentCase.Parent.Text != treeNameRoot)
                 {
                     parentCase = parentCase.Parent;
                 }
@@ -109,9 +109,25 @@ namespace TestCaseDescriptionsEditor
             }
         }
 
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+            DialogResult diagResult = openFile.ShowDialog();
+            if (diagResult == DialogResult.OK)
+            {
+                currentFilename = openFile.SafeFileName;
+                currentCases.LoadXML(openFile.FileName, out errorMessage);
+                PopulateTree();
+            }
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFile = new SaveFileDialog();
+            //Default filename is the current file name or defaultFileName
+            saveFile.FileName = (currentFilename == null) ? defaultFileName : currentFilename;
+            saveFile.DefaultExt = "xml";
+            saveFile.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
             DialogResult diagResult = saveFile.ShowDialog();
             if (diagResult == DialogResult.OK)
             {
@@ -167,6 +183,11 @@ namespace TestCaseDescriptionsEditor
         private void btnEditData_Click(object sender, EventArgs e)
         {
             editData();
+        }
+
+        private void btnEditAttrib_Click(object sender, EventArgs e)
+        {
+            editAttrib();
         }
 
         private void addTest()
@@ -238,7 +259,7 @@ namespace TestCaseDescriptionsEditor
             DialogResult popres = popedit.ShowDialog();
             if (popres == DialogResult.Yes)
             {
-                currentCase.Name = popedit.Name;
+                currentCase.Name = popedit.CaseName;
                 PopulateTree();
             }
         }
@@ -282,67 +303,55 @@ namespace TestCaseDescriptionsEditor
             if (e.Node.Bounds.Contains(e.Location) && e.Node.Parent != null)
             {
                 DialogResult popres;
-                // If double clicked a data item, open it for editing
-                if (e.Node.Parent.Text.Equals("Data Items"))
+                if (e.Node.Parent.Text.Equals(treeNameDataItems))
                 {
-                    if (e.Node.Text.StartsWith("Key: "))
-                    {
-                        FormPopupDataEdit popedit = new FormPopupDataEdit(currentCase.DataItems, e.Node.Text.Substring(5), e.Node.NextNode.Text.Substring(7));
-                        popres = popedit.ShowDialog();
-                        if (popres == DialogResult.Yes)
-                        {
-                            currentCase.DataItems.Remove(popedit.OldKey);
-                            currentCase.DataItems.Add(popedit.Key, popedit.Value);
-                            PopulateTree();
-                            PopulateCurrentTree();
-                        }
-                    }
-                    else if (e.Node.Text.StartsWith("Value: "))
-                    {
-                        FormPopupDataEdit popedit = new FormPopupDataEdit(currentCase.DataItems, e.Node.PrevNode.Text.Substring(5), e.Node.Text.Substring(7));
-                        popres = popedit.ShowDialog();
-                        if (popres == DialogResult.Yes)
-                        {
-                            currentCase.DataItems.Remove(popedit.OldKey);
-                            currentCase.DataItems.Add(popedit.Key, popedit.Value);
-                            PopulateTree();
-                            PopulateCurrentTree();
-                        }
-                    }
+                    FormPopupDataEdit popedit = null;
+
+                    // Selects the proper data item regardless of whether they clicked on the Key or Value
+                    if (e.Node.Text.StartsWith(treePrefixKey))
+                        popedit = new FormPopupDataEdit(currentCase.DataItems, e.Node.Text.Substring(5), e.Node.NextNode.Text.Substring(7));
+                    else if (e.Node.Text.StartsWith(treePrefixValue))
+                        popedit = new FormPopupDataEdit(currentCase.DataItems, e.Node.PrevNode.Text.Substring(5), e.Node.Text.Substring(7));
                     else
                         MessageBox.Show("Malformed Data Item: " + e.Node.Text);
 
+                    if (popedit != null)
+                    {
+                        popres = popedit.ShowDialog();
+                        if (popres == DialogResult.Yes)
+                        {
+                            currentCase.DataItems.Remove(popedit.OldKey);
+                            currentCase.DataItems.Add(popedit.Key, popedit.Value);
+                            PopulateTree();
+                            PopulateCurrentTree();
+                        }
+                    }
                 }
-                else if (e.Node.Text.Equals("Data Items"))
+                else if (e.Node.Text.Equals(treeNameDataItems))
                 {
                     editData();
                 }
-                else if (e.Node.Text.Equals("Attributes"))
+                else if (e.Node.Text.Equals(treeNameAttributes))
                 {
                     editAttrib();
                 }
-                else if (e.Node.Parent.Text.Equals("Attributes"))
+                else if (e.Node.Parent.Text.Equals(treeNameAttributes))
                 {
                     editAttribute();
                 }
-                else if (e.Node.Text.StartsWith("Name: "))
+                else if (e.Node.Text.StartsWith(treePrefixName))
                 {
                     editName();
                 }
-                else if (e.Node.Text.StartsWith("Title: "))
+                else if (e.Node.Text.StartsWith(treePrefixTitle))
                 {
                     editTitle();
                 }
-                else if (e.Node.Text.StartsWith("Timeout: "))
+                else if (e.Node.Text.StartsWith(treePrefixTimeout))
                 {
                     editTimeout();
                 }
             }
-        }
-
-        private void btnEditAttrib_Click(object sender, EventArgs e)
-        {
-            editAttrib();
         }
 
         private void mniAddTest_Click(object sender, EventArgs e)
@@ -386,26 +395,26 @@ namespace TestCaseDescriptionsEditor
             bool movable = false;
             if (currentCase != null && node != null && node.Parent != null)
             {
-                if (node.Parent.Text.Equals("Data Items") ||
-                    node.Parent.Text.Equals("Attributes") ||
-                    node.Text.Equals("Data Items") ||
-                    node.Text.Equals("Attributes") ||
-                    node.Text.StartsWith("Name: ") ||
-                    node.Text.StartsWith("Title: ") ||
-                    node.Text.StartsWith("Timeout: "))
+                if (node.Parent.Text.Equals(treeNameDataItems) ||
+                    node.Parent.Text.Equals(treeNameAttributes) ||
+                    node.Text.Equals(treeNameDataItems) ||
+                    node.Text.Equals(treeNameAttributes) ||
+                    node.Text.StartsWith(treePrefixName) ||
+                    node.Text.StartsWith(treePrefixTitle) ||
+                    node.Text.StartsWith(treePrefixTimeout))
                 {
                     editable = true;
                 }
 
-                if (node.Parent.Text.Equals("Attributes") ||
-                    node.Parent.Text.Equals("TestCaseDescriptions"))
+                if (node.Parent.Text.Equals(treeNameAttributes) ||
+                    node.Parent.Text.Equals(treeNameRoot))
                 {
                     movable = true;
                 }
 
-                if (node.Parent.Text.Equals("Data Items") ||
-                    node.Parent.Text.Equals("Attributes") ||
-                    node.Parent.Text.Equals("TestCaseDescriptions"))
+                if (node.Parent.Text.Equals(treeNameDataItems) ||
+                    node.Parent.Text.Equals(treeNameAttributes) ||
+                    node.Parent.Text.Equals(treeNameRoot))
                 {
                     removable = true;
                 }
@@ -418,13 +427,13 @@ namespace TestCaseDescriptionsEditor
 
         private void mniEdit_Click(object sender, EventArgs e)
         {
-            if (fullTree.SelectedNode.Text.Equals("Data Items"))
+            if (fullTree.SelectedNode.Text.Equals(treeNameDataItems))
                 editData();
 
-            else if (fullTree.SelectedNode.Text.Equals("Attributes"))
+            else if (fullTree.SelectedNode.Text.Equals(treeNameAttributes))
                 editAttrib();
 
-            else if (fullTree.SelectedNode.Text.StartsWith("Key: "))
+            else if (fullTree.SelectedNode.Text.StartsWith(treePrefixKey))
             {
                 FormPopupDataEdit popedit = new FormPopupDataEdit(currentCase.DataItems,
                                                                 fullTree.SelectedNode.Text.Substring(5),
@@ -438,7 +447,7 @@ namespace TestCaseDescriptionsEditor
                 }
             }
 
-            else if (fullTree.SelectedNode.Text.StartsWith("Value: "))
+            else if (fullTree.SelectedNode.Text.StartsWith(treePrefixValue))
             {
                 FormPopupDataEdit popedit = new FormPopupDataEdit(currentCase.DataItems,
                                                                 fullTree.SelectedNode.PrevNode.Text.Substring(5),
@@ -452,21 +461,21 @@ namespace TestCaseDescriptionsEditor
                 }
             }
 
-            else if (fullTree.SelectedNode.Text.StartsWith("Name: "))
+            else if (fullTree.SelectedNode.Text.StartsWith(treePrefixName))
             {
                 editName();
             }
 
-            else if (fullTree.SelectedNode.Text.StartsWith("Title: "))
+            else if (fullTree.SelectedNode.Text.StartsWith(treePrefixTitle))
             {
                 editTitle();
             }
 
-            else if (fullTree.SelectedNode.Text.StartsWith("Timeout: "))
+            else if (fullTree.SelectedNode.Text.StartsWith(treePrefixTimeout))
             {
                 editTimeout();
             }
-            else if (fullTree.SelectedNode.Parent.Text.Equals("Attributes"))
+            else if (fullTree.SelectedNode.Parent.Text.Equals(treeNameAttributes))
             {
                 editAttribute();
             }
@@ -478,19 +487,19 @@ namespace TestCaseDescriptionsEditor
         {
             if (currentCase != null)
             {
-                if (fullTree.SelectedNode.Parent.Text.Equals("TestCaseDescriptions"))
+                if (fullTree.SelectedNode.Parent.Text.Equals(treeNameRoot))
                 {
                     currentCases.Remove(currentCase, out errorMessage);
                     PopulateTree();
                 }
-                else if (fullTree.SelectedNode.Parent.Text.Equals("Attributes"))
+                else if (fullTree.SelectedNode.Parent.Text.Equals(treeNameAttributes))
                 {
                     currentCase.Attributes.Remove(fullTree.SelectedNode.Text);
                     PopulateTree();
                 }
-                else if (fullTree.SelectedNode.Parent.Text.Equals("Data Items"))
+                else if (fullTree.SelectedNode.Parent.Text.Equals(treeNameDataItems))
                 {
-                    if(fullTree.SelectedNode.Text.StartsWith("Key: "))
+                    if (fullTree.SelectedNode.Text.StartsWith(treePrefixKey))
                         currentCase.DataItems.Remove(fullTree.SelectedNode.Text.Substring(5));
                     else
                         currentCase.DataItems.Remove(fullTree.SelectedNode.PrevNode.Text.Substring(5));
@@ -507,12 +516,12 @@ namespace TestCaseDescriptionsEditor
         {
             if (currentCase != null)
             {
-                if (fullTree.SelectedNode.Parent.Text.Equals("TestCaseDescriptions"))
+                if (fullTree.SelectedNode.Parent.Text.Equals(treeNameRoot))
                 {
                     currentCases.MoveUp(currentCase, out errorMessage);
                     PopulateTree();
                 }
-                else if (fullTree.SelectedNode.Parent.Text.Equals("Attributes"))
+                else if (fullTree.SelectedNode.Parent.Text.Equals(treeNameAttributes))
                 {
                     string attrib = fullTree.SelectedNode.Text;
                     int oldindex = currentCase.Attributes.IndexOf(attrib);
@@ -534,12 +543,12 @@ namespace TestCaseDescriptionsEditor
         {
             if (currentCase != null)
             {
-                if (fullTree.SelectedNode.Parent.Text.Equals("TestCaseDescriptions"))
+                if (fullTree.SelectedNode.Parent.Text.Equals(treeNameRoot))
                 {
                     currentCases.MoveDown(currentCase, out errorMessage);
                     PopulateTree();
                 }
-                else if (fullTree.SelectedNode.Parent.Text.Equals("Attributes"))
+                else if (fullTree.SelectedNode.Parent.Text.Equals(treeNameAttributes))
                 {
                     string attrib = fullTree.SelectedNode.Text;
                     int oldindex = currentCase.Attributes.IndexOf(attrib);

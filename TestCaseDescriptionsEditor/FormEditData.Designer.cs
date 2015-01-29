@@ -179,9 +179,10 @@
             // 
             // FormEditData
             // 
+            this.AcceptButton = this.btnDone;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(461, 161);
+            this.ClientSize = new System.Drawing.Size(461, 162);
             this.Controls.Add(this.btnDone);
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.btnRemove);

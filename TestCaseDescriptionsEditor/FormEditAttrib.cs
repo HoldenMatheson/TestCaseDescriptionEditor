@@ -110,5 +110,60 @@ namespace TestCaseDescriptionsEditor
                 }
             }
         }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            if (textBoxAttrib.Text == "")
+            {
+                MessageBox.Show("Attribute must have a value.");
+            }
+            else if (!m_attributes.Contains(textBoxAttrib.Text))
+            {
+                m_attributes.Add(textBoxAttrib.Text);
+                PopulateList();
+                changesToSave = true;
+            }
+            else
+            {
+                MessageBox.Show("Attribute already exists.");
+            }
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            if (textBoxAttrib.Text == "")
+            {
+                MessageBox.Show("Attribute must have a value.");
+            }
+            else if (m_attributes.Contains(textBoxAttrib.Text))
+            {
+                m_attributes.Remove(textBoxAttrib.Text);
+                PopulateList();
+                changesToSave = true;
+            }
+            else
+            {
+                MessageBox.Show("Attribute does not exist.");
+            }
+        }
+
+        private void btnApply_Click(object sender, EventArgs e)
+        {
+            if (textBoxAttrib.Text == "")
+                MessageBox.Show("Attribute must have a value.");
+            else if (listViewAttrib.SelectedItems.Count < 1)
+                MessageBox.Show("No item to edit.");
+            else if (textBoxAttrib.Text == listViewAttrib.SelectedItems[0].Text)
+                MessageBox.Show("No changes to apply.");
+            else if (m_attributes.Contains(textBoxAttrib.Text) && listViewAttrib.SelectedItems[0].Text != textBoxAttrib.Text)
+                MessageBox.Show("Another data item with the same key already exists.");
+            else
+            {
+                m_attributes.Remove(listViewAttrib.SelectedItems[0].Text);
+                m_attributes.Add(textBoxAttrib.Text);
+                PopulateList();
+                changesToSave = true;
+            }
+        }
     }
 }

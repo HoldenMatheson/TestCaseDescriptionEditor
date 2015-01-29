@@ -126,8 +126,8 @@ namespace TestCaseDescriptionsEditor
             else if (textBoxKey.Text == currentItem.Text &&
                         textBoxValue.Text == currentItem.SubItems[1].Text)
                 MessageBox.Show("No changes to apply.");
-            else if (m_dataitems.ContainsKey(textBoxKey.Text))
-                MessageBox.Show("Data item with the same key already exists.");
+            else if (m_dataitems.ContainsKey(textBoxKey.Text) && currentItem.Text != textBoxKey.Text)
+                MessageBox.Show("Another data item with the same key already exists.");
             else
             {
                 m_dataitems.Remove(currentItem.Text);
